@@ -2918,7 +2918,7 @@ extern const u16 gUnkUiFramePalettes[];
 // extern ??? gUnknown_08803CB0
 // extern ??? gUnknown_08803CD0
 // extern ??? gCharacterData
-extern const struct ItemData gItemData[];
+extern const struct *ItemData gItemData[];
 // extern ??? gUnknown_0880B90C
 extern const s8 gUnknown_0880BB96[]; // Unit drop movement cost table
 extern const s8 gUnknown_0880BC18[]; // Ballista mov cost table
