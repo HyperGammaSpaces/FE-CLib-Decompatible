@@ -4,6 +4,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+	
+#include "global.h"
+
+#include "gba/gba.h"
 
 #include "agb_sram.h"
 #include "armfunc.h"
@@ -54,9 +58,6 @@ extern "C" {
 #include "constants/characters.h"
 #include "constants/terrains.h"
 
-#include "global.h"
-
-#include "gba/gba.h"
 
 // #include "gbafe/armfunc.h"
 // #include "gbafe/random.h"
