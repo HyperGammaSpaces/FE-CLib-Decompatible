@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "gba/gba.h"
+#include "gbafe.h"
 
 #define CONST_DATA __attribute__((section(".data")))
 
