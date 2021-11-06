@@ -5,6 +5,8 @@
 #include "types.h"
 #include "global.h"
 #include "proc.h"
+#include "bmitem.h"
+#include "bmreliance.h"
 
 // extern ??? gUnknown_02000000
 // extern ??? gUnknown_02000008
