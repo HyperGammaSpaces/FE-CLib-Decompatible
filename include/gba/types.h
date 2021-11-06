@@ -7,9 +7,6 @@ typedef uint8_t   u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
 typedef uint64_t u64;
-typedef int8_t    i8;
-typedef int16_t  i16;
-typedef int32_t  i32;
 typedef int8_t    s8;
 typedef int16_t  s16;
 typedef int32_t  s32;
@@ -19,17 +16,17 @@ typedef volatile u8   vu8;
 typedef volatile u16 vu16;
 typedef volatile u32 vu32;
 typedef volatile u64 vu64;
-typedef volatile i8   vs8;
-typedef volatile i16 vs16;
-typedef volatile i32 vs32;
+typedef volatile s8   vs8;
+typedef volatile s16 vs16;
+typedef volatile s32 vs32;
 typedef volatile s64 vs64;
 
 typedef float  f32;
 typedef double f64;
 
-#if !defined(__cplusplus) && !defined(bool)
-typedef i8 bool;
-#endif
+typedef u8  bool8;
+typedef u16 bool16;
+typedef u32 bool32;
 
 struct DispCnt
 {
@@ -173,29 +170,29 @@ struct OamData
 
 struct BgAffineSrcData
 {
-    i32 texX;
-    i32 texY;
-    i16 scrX;
-    i16 scrY;
-    i16 sx;
-    i16 sy;
+    s32 texX;
+    s32 texY;
+    s16 scrX;
+    s16 scrY;
+    s16 sx;
+    s16 sy;
     u16 alpha;
 };
 
 struct BgAffineDstData
 {
-    i16 pa;
-    i16 pb;
-    i16 pc;
-    i16 pd;
-    i32 dx;
-    i32 dy;
+    s16 pa;
+    s16 pb;
+    s16 pc;
+    s16 pd;
+    s32 dx;
+    s32 dy;
 };
 
 struct ObjAffineSrcData
 {
-    i16 xScale;
-    i16 yScale;
+    s16 xScale;
+    s16 yScale;
     u16 rotation;
 };
 
