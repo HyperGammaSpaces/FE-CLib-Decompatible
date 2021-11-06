@@ -9,6 +9,11 @@ extern "C" {
 
 #include "gba/gba.h"
 
+#include "constants/characters.h"
+#include "constants/classes.h"
+#include "constants/items.h"
+#include "constants/terrains.h"
+
 #include "agb_sram.h"
 #include "anime.h"
 #include "ap.h"
