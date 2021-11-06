@@ -6,12 +6,55 @@ struct Proc;
 struct Unit;
 
 // Forward declarations for types that may need to be declared elsewhere later?
-struct BattleUnit; // currently in unit.h
-struct UnitInfo; // currently in unit.h
+struct BattleUnit; // currently in bmunit.h
+struct UnitDefinition; // currently in bmunit.h
 struct Trap;
 struct BattleHit;
 
 // Type definitions for types without any other home :/
+
+struct BgCoords
+{
+    u16 x;
+    u16 y;
+};
+
+struct Struct03003080
+{
+    /*0x00*/ struct DispCnt dispcnt;
+    /*0x04*/ struct DispStat dispstat;
+    /*0x08*/ u8 filler8[4];
+    /*0x0C*/ struct BgCnt bg0cnt;
+    /*0x10*/ struct BgCnt bg1cnt;
+    /*0x14*/ struct BgCnt bg2cnt;
+    /*0x18*/ struct BgCnt bg3cnt;
+    /*0x1C*/ struct BgCoords bgoffset[4];
+    /*0x2C*/ u8 win0_right, win0_left;
+    /*0x2C*/ u8 win1_right, win1_left;
+    /*0x30*/ u8 win0_bottom, win0_top;
+    /*0x30*/ u8 win1_bottom, win1_top;
+    /*0x34*/ struct WinCnt wincnt;
+    /*0x38*/ u16 mosaic;
+             u8 filler3A[2];
+    /*0x3C*/ struct BlendCnt bldcnt;
+    /*0x40*/ u8 filler40[4];
+    /*0x44*/ u8 blendCoeffA;
+    /*0x45*/ u8 blendCoeffB;
+    /*0x46*/ u8 blendY;
+    /*0x48*/ u16 bg2pa;
+    /*0x4A*/ u16 bg2pb;
+    /*0x4C*/ u16 bg2pc;
+    /*0x4E*/ u16 bg2pd;
+    /*0x50*/ u32 bg2x;
+    /*0x54*/ u32 bg2y;
+    /*0x58*/ u16 bg3pa;
+    /*0x5A*/ u16 bg3pb;
+    /*0x5C*/ u16 bg3pc;
+    /*0x5E*/ u16 bg3pd;
+    /*0x60*/ u32 bg3x;
+    /*0x64*/ u32 bg3y;
+    /*0x68*/ s8 colorAddition;
+};
 
 struct Struct0858791C
 {
@@ -27,11 +70,36 @@ struct TileDataTransfer
     u16 mode;
 };
 
+struct OamDataTransfer
+{
+    void *src;
+    void *dest;
+    u16 unk8;
+    u16 count;
+};
+
 struct Struct02024CD4
 {
     int unk0;
     int unk4;
 };
+
+struct KeyStatusBuffer
+{
+    u8 repeatDelay;     // initial delay before generating auto-repeat presses
+    u8 repeatInterval;  // time between auto-repeat presses
+    u8 repeatTimer;     // (decreased by one each frame, reset to repeatDelay when Presses change and repeatInterval when reaches 0)
+    u16 heldKeys;       // keys that are currently held down
+    u16 repeatedKeys;   // auto-repeated keys
+    u16 newKeys;        // keys that went down this frame
+    u16 prevKeys;       // keys that were held down last frame
+    u16 LastPressState;
+    bool16 ABLRPressed; // 1 for Release (A B L R Only), 0 Otherwise
+    u16 newKeys2;
+    u16 TimeSinceStartSelect; // Time since last Non-Start Non-Select Button was pressed
+};
+
+typedef void (*InterruptHandler)(void);
 
 struct Vec2 { short x, y; };
 struct Vec2u { u16 x, y; };
@@ -40,8 +108,8 @@ struct Struct0202BCB0 // Game State Struct
 {
     /* 00 */ u8  mainLoopEndedFlag;
 
-    /* 01 */ i8  gameLogicSemaphore;
-    /* 02 */ i8  gameGfxSemaphore;
+    /* 01 */ s8  gameLogicSemaphore;
+    /* 02 */ s8  gameGfxSemaphore;
 
     /* 03 */ u8  _unk04;
 
@@ -70,18 +138,18 @@ struct Struct0202BCB0 // Game State Struct
     /* 3C */ u8 unk3C;
     /* 3D */ u8 unk3D;
     /* 3E */ u8 unk3E;
-    /* 3F */ i8 unk3F;
+    /* 3F */ s8 unk3F;
 };
 
 struct RAMChapterData { // Chapter Data Struct
     /* 00 */ u32 unk0; // a time value
     /* 04 */ u32 unk4; // a time value
 
-    /* 08 */ int gold;
+    /* 08 */ u32 partyGoldAmount;
     /* 0C */ u8  gameSaveSlot;
 
     /* 0D */ u8  chapterVisionRange; // 0 means no fog
-    /* 0E */ i8  chapter;
+    /* 0E */ s8  chapterIndex;
 
     /* 0F */ u8  chapterPhaseIndex; // 0x00 = Player phase, 0x40 = NPC phase, 0x80 = Enemy phase (0xC0 = link arena 4th team?)
 
@@ -101,7 +169,7 @@ struct RAMChapterData { // Chapter Data Struct
 
     // character identifiers indexed by weapon type.
     // has to do with allowing unusable weapons to be used
-    /* 1C */ u8  item_kind_seals[4];
+    /* 1C */ u8  unk1C[4];
 
     /* 20 */ char playerName[0x40 - 0x20]; // unused outside of link arena (was tactician name in FE7); Size unknown
 
@@ -109,19 +177,19 @@ struct RAMChapterData { // Chapter Data Struct
     u32 unk40_1:1; // 1
     u32 unk40_2:1; // 1
     u32 unk40_3:2; // 2
-    u32 configNoAutoCursor:1; // 1
-    u32 configTextSpeed:2;
-    u32 configWalkSpeed:1; // 1
-    u32 configBgmDisable:1; // 1
-    u32 configSeDisable:1; // 1
-    u32 configWindowColor:2;
+    u32 unk40_5:1; // 1
+    u32 cfgTextSpeed:2;
+    u32 unk40_8:1; // 1
+    u32 unk41_1:1; // 1
+    u32 unk41_2:1; // 1
+    u32 cfgWindowColor:2;
     u32 unk41_5:1; // 1
     u32 unk41_6:1; // unk
     u32 unk41_7:1; // 1
     u32 unk41_8:1; // 1
     u32 unk42_1:1; // unk
-    u32 configBattleAnim:2; // 2
-    u32 configBattlePreviewKind:2; // 2
+    u32 unk42_2:2; // 2
+    u32 unk42_4:2; // 2
     u32 unk42_6:1; // 1
     u32 unk42_7:1; // unk
     u32 unk42_8:2; // 2 (!)
@@ -274,9 +342,9 @@ enum
     WEATHER_CLOUDS = 7
 };
 
-struct MapSprite
+struct SMSHandle
 {
-    /* 00 */ struct MapSprite* pNext;
+    /* 00 */ struct SMSHandle* pNext;
 
     /* 04 */ short xDisplay;
     /* 06 */ short yDisplay;
@@ -284,12 +352,12 @@ struct MapSprite
     /* 08 */ u16 oam2Base;
 
     /* 0A */ u8 _u0A;
-    /* 0B */ i8 config;
+    /* 0B */ s8 config;
 };
 
 struct MapAnimActorState
 {
-    /* 00 */ struct Unit* unit;
+    /* 00 */ struct Unit* pUnit;
     /* 04 */ struct BattleUnit* pBattleUnit;
     /* 08 */ struct MUProc* pMUProc;
     /* 0C */ u8 u0C;
@@ -306,7 +374,7 @@ struct MapAnimState
     /* 00 */ struct MapAnimActorState actors[4];
 
     /* 50 */ u32* pCurrentRound;
-    /* 54 */ const struct ProcScr* pItemMapAnimProcScript;
+    /* 54 */ const struct ProcCmd* pItemMapAnimProcScript;
     /* 58 */ u8 subjectActorId;
     /* 59 */ u8 targetActorId;
     /* 5A */ u16 roundBits;
@@ -319,8 +387,8 @@ struct MapAnimState
 
 struct MMSData
 {
-    u8 const* img;
-    u16 const* anim;
+    const void* pGraphics;
+    const void* pAnimation;
 };
 
 struct ArenaData
@@ -337,8 +405,8 @@ struct ArenaData
     /* 10 */ u8 opponentClassId;
     /* 11 */ u8 playerLevel;
     /* 12 */ u8 oppenentLevel;
-    /* 13 */ i8 playerIsMagic;
-    /* 14 */ i8 opponentIsMagic;
+    /* 13 */ s8 playerIsMagic;
+    /* 14 */ s8 opponentIsMagic;
     /* 16 */ short playerPowerWeight;
     /* 18 */ short opponentPowerWeight;
     /* 1A */ u16 playerWeapon;
@@ -374,7 +442,7 @@ enum
 
 struct MapChange
 {
-    /* 00 */ i8 id;
+    /* 00 */ s8 id;
     /* 01 */ u8 xOrigin;
     /* 02 */ u8 yOrigin;
     /* 03 */ u8 xSize;
@@ -401,7 +469,7 @@ struct UnitUsageStats
 	/* 120 */ /* 8bit pad */
 };
 
-enum { UNIT_SUPPORT_COUNT = 7 };
+enum { UNIT_SUPPORT_MAX_COUNT = 7 };
 
 enum
 {
@@ -425,7 +493,7 @@ enum
     FACE_BLINK_CLOSED = 6,
 };
 
-struct FaceInfo
+struct FaceData
 {
     /* 00 */ const u8*  img;
     /* 04 */ const u8*  imgChibi;
@@ -437,7 +505,7 @@ struct FaceInfo
     /* 18 */ u8 blinkKind;
 };
 
-struct FaceVramEnt
+struct FaceVramEntry
 {
     /* 00 */ u32 tileOffset;
     /* 04 */ u16 paletteId;

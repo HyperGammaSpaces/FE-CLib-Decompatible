@@ -13,10 +13,10 @@ struct EventEngineProc {
     /* 3C */ u16 evStateBits;
     /* 3E */ u16 evStallTimer;
 
-    /* 40 */ i8 overwrittenTextSpeed;
+    /* 40 */ s8 overwrittenTextSpeed;
     /* 41 */ u8 execType;
     /* 42 */ u8 activeTextType;
-    /* 43 */ u8 chapter;
+    /* 43 */ u8 chapterIndex;
 
     /* 44 */ u16 mapSpritePalIdOverride;
 
@@ -60,9 +60,9 @@ enum EventStateFlags {
 // This will probably be used in evtcmd_gmap/evtscr for defining the event code handler arrays or something
 typedef u8(*EventFuncType)(struct EventEngineProc*);
 
-void _MarkSomethingInMenu(void);
-void EventEngine_OnUpdate(struct EventEngineProc* proc);
-void EventEngine_OnEnd(struct EventEngineProc* proc);
+// ??? _MarkSomethingInMenu(???);
+// ??? EventEngine_OnUpdate(???);
+// ??? EventEngine_OnEnd(???);
 // ??? EnqueueEventCall(???);
 // ??? CallNextQueuedEvent(???);
 void CallEvent(const u16* events, u8 execType);
@@ -71,10 +71,10 @@ struct EventEngineProc* EventEngine_Create(const u16* events, u8 idk);
 int EventEngineExists(void);
 // ??? BattleEventEngineExists(???);
 // ??? DeleteEventEngines(???);
-// ??? func_0800D1E4(???);
+// ??? sub_800D1E4(???);
 // ??? SetEventSlotC(???);
-// ??? func_0800D204(???);
-int func_0800D208(void);
+// ??? sub_800D204(???);
+int sub_800D208(void);
 // ??? CallBattleQuoteEvent(???);
 // ??? CallBattleQuoteEventInBattle(???);
 // ??? CallTileChangeEvent(???);
@@ -84,16 +84,16 @@ int func_0800D208(void);
 // ??? CallRetreatPromptEvent(???);
 // ??? CallSuspendPromptEvent(???);
 void CallGameOverEvent(void);
-// ??? func_0800D3E4(???);
+// ??? sub_800D3E4(???);
 // ??? EventEngine_StartSkip(???);
-// ??? func_0800D488(???);
+// ??? sub_800D488(???);
 // ??? SetEventTriggerState(???);
 // ??? GetEventTriggerState(???);
-// ??? func_0800D4D4(???);
-// ??? func_0800D524(???);
+// ??? sub_800D4D4(???);
+// ??? sub_800D524(???);
 // ??? SlotQueuePush(???);
 // ??? SlotQueuePop(???);
-// ??? SetEventCounter(???);
-// ??? GetEventCounter(???);
+// ??? SetEventSlotCounter(???);
+// ??? GetEventSlotCounter(???);
 
 #endif // GUARD_EVENT_H

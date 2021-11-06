@@ -1,9 +1,6 @@
 #ifndef GUARD_STATSCREEN_H
 #define GUARD_STATSCREEN_H
 
-#include "global.h"
-#include "unit.h"
-
 enum
 {
     // BG palette allocation
@@ -99,11 +96,11 @@ struct StatScreenSt
     /* 02 */ u16 pageSlideKey; // 0, DPAD_RIGHT or DPAD_LEFT
     /* 04 */ short xDispOff; // Note: Always 0, not properly taked into account by most things
     /* 06 */ short yDispOff;
-    /* 08 */ i8 inTransition;
-    /* 0C */ Unit_t* unit;
+    /* 08 */ s8 inTransition;
+    /* 0C */ struct Unit* unit;
     /* 10 */ struct MUProc* mu;
     /* 14 */ const struct HelpBoxInfo* help;
-    /* 18 */ struct Text text[STATSCREEN_TEXT_MAX];
+    /* 18 */ struct TextHandle text[STATSCREEN_TEXT_MAX];
 };
 
 enum
@@ -161,7 +158,7 @@ struct HelpBoxInfo
 int GetLastStatScreenUid(void);
 void SetLastStatScreenUid(int uid);
 void SetStatScreenConfig(int unk);
-void StartStatScreen(Unit_t* unit, Proc_t* parent);
+void StartStatScreen(struct Unit* unit, struct Proc* parent);
 
 void HbPopulate_SSItem(struct HelpBoxProc* proc);
 void HbPopulate_SSStatus(struct HelpBoxProc* proc);
@@ -175,33 +172,33 @@ void HbRedirect_SSSupports(struct HelpBoxProc* proc);
 // static
 void UpdateHelpBoxDisplay(struct HelpBoxProc* proc, int arg1);
 
-void ShowTextHelpBox(int x, int y, int mid);
-void ShowSilentTextHelpBox(int x, int y, int mid);
-void ShowItemHelpBox(int x, int y, int item);
-void StartHelpBoxFromInfo(const struct HelpBoxInfo* info, int unk);
 void StartHelpBox(int x, int y, int mid);
-void MoveableHelpBox_OnEnd(void);
-void MoveableHelpBox_OnEnd(void);
+void StartHelpBox_Unk(int x, int y, int mid);
+void StartItemHelpBox(int x, int y, int item);
+void StartHelpBoxExt(const struct HelpBoxInfo* info, int unk);
+void StartHelpBoxExt_Unk(int x, int y, int mid);
+void CloseHelpBox(void);
+void CloseHelpBox(void);
 void EndHelpBox(void);
-void StartMoveableHelpBox(const struct HelpBoxInfo* info, Proc_t* parent);
-void StartMoveableHelpBoxExt(const struct HelpBoxInfo* info, Proc_t* parent, int x, int y);
+void StartMovingHelpBox(const struct HelpBoxInfo* info, struct Proc* parent);
+void StartMovingHelpBoxExt(const struct HelpBoxInfo* info, struct Proc* parent, int x, int y);
 
 // static
 void SetHelpBoxInitPosition(struct HelpBoxProc* proc, int x, int y);
 void ResetHelpBoxInitSize(struct HelpBoxProc* proc);
-int GetItemHelpBoxKind(int item);
+int GetHelpBoxItemInfoKind(int item);
 
 int TryRelocateHbUp(struct HelpBoxProc* proc);
 int TryRelocateHbDown(struct HelpBoxProc* proc);
 int TryRelocateHbLeft(struct HelpBoxProc* proc);
 int TryRelocateHbRight(struct HelpBoxProc* proc);
 
-int StartLockingHelpBox_Unused(int mid, Proc_t* parent);
+int StartLockingHelpBox_Unused(int mid, struct Proc* parent);
 
-Proc_t* StartHelpPromptSprite_Unused(int x, int y, Proc_t* parent);
-Proc_t* ShowRIsInfo(int x, int y, int palid, Proc_t* parent);
-Proc_t* StartHelpPromptSprite_Unused2(int x, int y, Proc_t* parent);
-void HideRIsInfo(void);
+struct Proc* StartHelpPromptSprite_Unused(int x, int y, struct Proc* parent);
+struct Proc* StartHelpPromptSprite(int x, int y, int palid, struct Proc* parent);
+struct Proc* StartHelpPromptSprite_Unused2(int x, int y, struct Proc* parent);
+void EndHelpPromptSprite(void);
 void MoveHelpPromptSprite(int x, int y);
 
 const struct HelpBoxInfo* GetLastHelpBoxInfo(void);

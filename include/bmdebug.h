@@ -1,5 +1,3 @@
-// TODO [2021-10-02]: clean up and update to stan standards
-
 //
 // Created by laqieer on 2020/3/3.
 //
@@ -7,21 +5,20 @@
 #ifndef GUARD_BMDEBUG_H
 #define GUARD_BMDEBUG_H
 
-#include "global.h"
-
 #include "functions.h"
 #include "variables.h"
 #include "gba/io_reg.h"
 #include "hardware.h"
 #include "proc.h"
-#include "text.h"
+#include "fontgrp.h"
 #include "uiutils.h"
 #include "uimenu.h"
+#include "fontgrp.h"
 #include "bmio.h"
 
 struct DebugPrintProc
 {
-    PROC_HEADER;
+    PROC_HEADER
     int x; // unit: tile
     int y; // unit: tile
     int unk_34;
@@ -47,12 +44,12 @@ void DebugMenuMapIdleCore(struct MenuItemProc *menuItemProc, int, int);
 u8 DebugClearMenu_ClearFile(struct MenuProc*, struct MenuItemProc*);
 int DebugChargeMenu_Draw(struct MenuProc*, struct MenuItemProc*);
 u8 DebugChargeMenu_Idle(struct MenuProc*, struct MenuItemProc*);
-u8 StartupDebugMenu_ReleaseEntryEffect(struct MenuProc*, struct MenuItemProc*);
+u8 DebugContinueMenu_ReleaseEntry(struct MenuProc*, struct MenuItemProc*);
 u8 DebugContinueMenu_IsContinueChapterAvailable(const struct MenuItemDef*, int number);
 u8 DebugContinueMenu_ContinueChapter(struct MenuProc*, struct MenuItemProc*);
 u8 DebugContinueMenu_IsManualContinueAvailable(const struct MenuItemDef*, int number);
 u8 DebugContinueMenu_ManualContinue(struct MenuProc*, struct MenuItemProc*);
-u8 StartupDebugMenu_InitializeFileEffect(struct MenuProc*, struct MenuItemProc*);
+u8 DebugContinueMenu_InitializeFile(struct MenuProc*, struct MenuItemProc*);
 u8 DebugChuudanMenu_IsManualSaveAvailable(const struct MenuItemDef*, int number);
 u8 DebugChuudanMenu_ManualSave(struct MenuProc*, struct MenuItemProc*);
 u8 DebugMenu_MapEffect(struct MenuProc*, struct MenuItemProc*);
@@ -73,14 +70,14 @@ u8 DebugMenu_ErasedEffect(struct MenuProc*, struct MenuItemProc*);
 u8 DebugMenu_GNightEffect(struct MenuProc*, struct MenuItemProc*);
 void DebugContinueMenuInit(struct MenuProc*);
 void DebugContinueMenuEnd(struct MenuProc*);
-u8 func_0801C650(i8 menuItemNumber);
+u8 sub_801C650(s8 menuItemNumber);
 void nullsub_9();
 
-extern const struct MenuInfo MenuInfo_DebugClear;
-extern const struct MenuInfo MenuInfo_DebugCharge;
-extern const struct MenuInfo MenuInfo_DebugContinue;
-extern const struct MenuInfo MenuInfo_DebugChuudan;
-extern const struct MenuInfo MenuInfo_Debug;
+extern const struct MenuDef gDebugClearMenuDef;
+extern const struct MenuDef gDebugChargeMenuDef;
+extern const struct MenuDef gDebugContinueMenuDef;
+extern const struct MenuDef gDebugChuudanMenuDef;
+extern const struct MenuDef gDebugMenuDef;
 
 extern u8 gUnknown_03001780;
 

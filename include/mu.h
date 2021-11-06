@@ -1,10 +1,6 @@
 #ifndef GUARD_MU_H
 #define GUARD_MU_H
 
-#include "global.h"
-#include "sprite-anim.h"
-#include "unit.h"
-
 /*
     "MOVEUNIT" proc and related functions.
     Handles managing and displaying moving map sprites.
@@ -107,8 +103,8 @@ struct MUConfig;
 struct MUProc {
     PROC_HEADER;
 
-    /* 2C */ Unit_t* unit;
-    /* 30 */ SpriteAnim_t* sprite_anim;
+    /* 2C */ struct Unit* pUnit;
+    /* 30 */ struct APHandle* pAPHandle;
     /* 34 */ struct MUConfig* pMUConfig;
     /* 38 */ void* pGfxVRAM;
 
@@ -118,7 +114,7 @@ struct MUProc {
     /* 3F */ u8 stateId;
     /* 40 */ u8 boolIsHidden;
     /* 41 */ u8 displayedClassId;
-    /* 42 */ i8 facingId;
+    /* 42 */ s8 facingId;
     /* 43 */ u8 stepSoundTimer;
     /* 44 */ u8 boolForceMaxSpeed;
     /* 46 */ u16 objPriorityBits;
@@ -137,15 +133,15 @@ struct MUConfig {
     /* 01 */ u8  paletteIndex;
     /* 02 */ u16 objTileIndex;
     /* 04 */ u8  currentCommand;
-    /* 05 */ i8  commands[MU_COMMAND_MAX_COUNT];
+    /* 05 */ s8  commands[MU_COMMAND_MAX_COUNT];
     /* 45 */ // 3 byte padding
     /* 48 */ struct MUProc* pMUProc;
 };
 
-extern struct ProcScr CONST_DATA ProcScr_MoveUnit[];
-extern struct ProcScr CONST_DATA ProcScr_MUDeathFade[];
-extern struct ProcScr CONST_DATA ProcScr_MUBlinkEffect[];
-extern struct ProcScr CONST_DATA ProcScr_MU_89A2CF8[];
+extern struct ProcCmd CONST_DATA gProcScr_MoveUnit[];
+extern struct ProcCmd CONST_DATA gProcScr_MUDeathFade[];
+extern struct ProcCmd CONST_DATA gProcScr_MUBlinkEffect[];
+extern struct ProcCmd CONST_DATA gProcScr_MU_89A2CF8[];
 
 // Buffer for MU graphics
 // what to do with this?
@@ -155,15 +151,15 @@ extern u8 gMUGfxBuffer[];
 
 void MU_Init();
 
-struct MUProc* MU_CreateExt(Unit_t* unit, unsigned jid, unsigned palId);
-struct MUProc* MU_Create(Unit_t* unit);
+struct MUProc* MU_CreateExt(struct Unit* pUnit, unsigned classIndex, unsigned palId);
+struct MUProc* MU_Create(struct Unit* pUnit);
 
 void MU_ManualUpdate(struct MUProc* proc);
 
 void MU_EnableAttractCamera(struct MUProc* proc);
 void MU_DisableAttractCamera(struct MUProc* proc);
 
-struct MUProc* MU_CreateForUI(Unit_t* unit, int x, int y);
+struct MUProc* MU_CreateForUI(struct Unit* pUnit, int x, int y);
 
 void MU_8078524(struct MUProc* proc);
 
@@ -178,7 +174,7 @@ int MU_IsAnyActive(void);
 int MU_IsActive(struct MUProc* proc);
 void MU_StartMoveScript(struct MUProc* proc, const u8 commands[MU_COMMAND_MAX_COUNT]);
 
-struct MUProc* MU_CreateScripted(u16 x, u16 y, u16 jid, unsigned palId, const u8 commands[MU_COMMAND_MAX_COUNT]);
+struct MUProc* MU_CreateScripted(u16 x, u16 y, u16 classIndex, unsigned palId, const u8 commands[MU_COMMAND_MAX_COUNT]);
 
 void MU_StartStepSfx(int soundId, int b, int hPosition);
 
@@ -228,7 +224,7 @@ void MU_SetSpecialSprite(struct MUProc* proc, int displayedClassId, const u16* p
 
 void MU_SetPaletteId(struct MUProc* proc, unsigned paletteId);
 
-struct MUProc* MU_GetByUnit(Unit_t* unit);
+struct MUProc* MU_GetByUnit(struct Unit* unit);
 
 void MU_SortObjLayers(void);
 
