@@ -49,9 +49,9 @@ extern "C" {
 #include "unit.h"
 #include "unit_icon_data.h"
 #include "unit_icon_pointer.h"
-#include "constants/iids.h"
-#include "constants/jids.h"
-#include "constants/pids.h"
+#include "constants/items.h"
+#include "constants/classes.h"
+#include "constants/characters.h"
 #include "constants/terrains.h"
 
 #include "global.h"
