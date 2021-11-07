@@ -10,30 +10,13 @@ if __name__ == "__main__":
 		prev_s = f.readlines()
 	with open("fe8.map", "r") as f:
 		decompmap = f.readlines()
-	new_s = '''
-.macro SET_FUNC name, value
-	.global \\name
-	.type   \\name, function
-	.set    \\name, \\value
-.endm
-
-.macro SET_DATA name, value
-	.global \\name
-	.type   \\name, object
-	.set    \\name, \\value
-.endm
-
-@ division & other libgcc functions
-SET_FUNC __aeabi_idiv, __divsi3
-SET_FUNC __aeabi_idivmod, __modsi3
-
-'''
+	new_s = ''.join(prev_s)
 	newmap = []
 
 	for line in decompmap:
 		if line.startswith('                0x000000000'):
 			tmp = line.replace(' = .', '')
-			tmp = line.replace('0x000000000', '0x')
+			tmp = tmp.replace('0x000000000', '0x')
 			if len(tmp.split()) == 2:
 				newmap.append(tmp)
 
