@@ -11,11 +11,11 @@ if __name__ == "__main__":
 	with open("fe8.map", "r") as f:
 		decompmap = f.readlines()
 	new_s = ""
-	newmap = ""
+	newmap = []
 
 	for line in decompmap:
 		if line.startswith('                0x000000000'):
-			newmap += line
+			newmap.append(line.replace(' = .', ''))
 
 	for line in prev_s:
 		if line.startswith('SET_'):
@@ -44,13 +44,16 @@ if __name__ == "__main__":
 			if adr[-1] == 'f':
 				adr = adr[:-1] + 'e'
 
-			matching = [s for s in decompmap if adr in s]
-			if matching:
-				tmp = matching[-1].split()
+			matching = [s for s in newmap if adr in s]
+			for m in matching:
+				tmp = m.split()
 				if len(tmp) == 2:
 					# print(tmp)
 					tokens[1] = tmp[1]
 					tokens[1] += ','
+					break
+				# else:
+					# print(tmp)
 
 			line = ' '.join(tokens)
 			line += '\n'
