@@ -55,7 +55,8 @@ extern "C" {
 #include "unit_icon_data.h"
 #include "unit_icon_pointer.h"
 
-#define CONST_DATA __attribute__((section(".data")))
+// #define CONST_DATA __attribute__((section(".data")))
+#define CONST_DATA const
 
 #include "types.h"
 #include "variables.h"
