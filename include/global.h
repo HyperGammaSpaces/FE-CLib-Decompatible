@@ -6,7 +6,8 @@
 #include "gba/gba.h"
 #include "gbafe.h"
 
-#define CONST_DATA __attribute__((section(".data")))
+// #define CONST_DATA __attribute__((section(".data")))
+#define CONST_DATA const //replacing this for now
 
 #include "types.h"
 #include "variables.h"
