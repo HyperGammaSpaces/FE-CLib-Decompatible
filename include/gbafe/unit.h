@@ -44,7 +44,7 @@ struct CharacterData {
 	/* 06 */ u16 portraitId;
 	/* 08 */ u8 miniPortrait;
 	/* 09 */ u8 affinity;
-	/* 0A */ u8 unk0A;
+	/* 0A */ u8 sortOrder;
 
 	/* 0B */ s8 baseLevel;
 	/* 0C */ s8 baseHP;
@@ -75,7 +75,7 @@ struct CharacterData {
 	/* 28 */ u32 attributes;
 
 	/* 2C */ const struct SupportData* pSupportData;
-	/* 30 */ void* pUnk30;
+	/* 30 */ u8 conversationGroup;
 };
 
 struct ClassData {
@@ -86,7 +86,7 @@ struct ClassData {
 	/* 06 */ u8 SMSId;
 	/* 07 */ u8 slowWalking;
 	/* 08 */ u16 defaultPortraitId;
-	/* 0A */ u8 unk0A;
+	/* 0A */ u8 sortOrder;
 
 	/* 0B */ s8 baseHP;
 	/* 0C */ s8 basePow;
@@ -234,8 +234,8 @@ enum {
 	US_HAS_MOVED	= (1 << 6), // Bad name?
 	US_CANTOING	 = US_HAS_MOVED, // Alias
 	US_UNDER_A_ROOF = (1 << 7),
-	US_BIT8 = (1 << 8),
-	US_BIT9 = (1 << 9),
+	US_BIT8 = (1 << 8), //something for link arena
+	US_BIT9 = (1 << 9), //something for link arena
 	US_HAS_MOVED_AI = (1 << 10),
 	US_IN_BALLISTA  = (1 << 11),
 	US_DROP_ITEM    = (1 << 12),

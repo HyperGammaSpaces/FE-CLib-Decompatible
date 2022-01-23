@@ -40,7 +40,7 @@ struct MenuCommandDefinition
 	/* 00 */ const char* rawName;
 
 	/* 04 */ u16 nameId, helpId;
-	/* 08 */ u8 colorId, _u09;
+	/* 08 */ u8 colorId, overrideId;
 
 	/* 0C */ int(*isAvailable)(const MenuCommandDefinition*, int);
 
@@ -98,6 +98,20 @@ enum
 	MCA_NONUSABLE = 3,
 };
 
+enum MenuState
+{
+    // Menu state bits
+
+    MENU_STATE_GAMELOCKING = (1 << 0),
+    MENU_STATE_UNUSED1 = (1 << 1),
+    MENU_STATE_ENDING = (1 << 2),
+    MENU_STATE_NOTSHOWN = (1 << 3),
+    MENU_STATE_FLAT = (1 << 4),
+    MENU_STATE_NOCURSOR = (1 << 5),
+    MENU_STATE_FROZEN = (1 << 6),
+    MENU_STATE_DOOMED = (1 << 7),
+};
+
 enum MenuEffect
 {
 	//
@@ -111,6 +125,9 @@ enum MenuEffect
 	ME_END_FACE0 = (1 << 5),
 	ME_END_AFTER = (1 << 7),
 };
+
+//idk where else to put this, it makes the "Use/Equip/Trade/Drop" submenu
+void PrepareSubmenuGraphics(int x, int y); //! FE8U = 0x80234AD
 
 MenuProc* StartMenuAdjusted(const MenuDefinition*, int xScreen, int xLeft, int xRight); //! FE8U = 0x804EB99
 MenuProc* StartMenuChild(const MenuDefinition*, Proc* parent); //! FE8U = 0x804EBC9
