@@ -5,44 +5,79 @@
 extern "C" {
 #endif
 
+// #include "global.h"
+
 #include "gba/gba.h"
 
-#include "gbafe/armfunc.h"
-#include "gbafe/random.h"
-#include "gbafe/hardware.h"
-#include "gbafe/vramtransfer.h"
-#include "gbafe/proc.h"
-#include "gbafe/text.h"
-#include "gbafe/face.h"
-#include "gbafe/ap.h"
-#include "gbafe/hiobj.h"
-#include "gbafe/compress.h"
-#include "gbafe/game.h"
-#include "gbafe/item.h"
-#include "gbafe/unit.h"
-#include "gbafe/map.h"
-#include "gbafe/menu.h"
-#include "gbafe/targetselect.h"
-#include "gbafe/standunit.h"
-#include "gbafe/mu.h"
-#include "gbafe/trap.h"
-#include "gbafe/action.h"
-#include "gbafe/chapterdata.h"
-#include "gbafe/animinterpreter.h"
-#include "gbafe/ai.h"
-#include "gbafe/sound.h"
-#include "gbafe/debugprint.h"
-#include "gbafe/other.h"
-#include "gbafe/popup.h"
-#include "gbafe/icon.h"
-#include "gbafe/sram.h"
-#include "gbafe/save.h"
-#include "gbafe/event.h"
-#include "gbafe/battle.h"
-#include "gbafe/support.h"
-#include "gbafe/wm.h"
-#include "gbafe/dialogue.h"
-#include "gbafe/drawutils.h"
+#include "constants/characters.h"
+#include "constants/classes.h"
+#include "constants/items.h"
+#include "constants/terrains.h"
+
+#include "agb_sram.h"
+#include "anime.h"
+#include "ap.h"
+// #include "banim_data.h"
+// #include "banim_pointer.h"
+#include "bmdebug.h"
+#include "bmidoten.h"
+#include "bmio.h"
+#include "bmitem.h"
+#include "bmitemuse.h"
+#include "bmmap.h"
+#include "bmmenu.h"
+#include "bmreliance.h"
+#include "bmtrick.h"
+#include "bmunit.h"
+#include "bmbattle.h"
+#include "chap_title.h"
+#include "chap_title_pointer.h"
+#include "chapterdata.h"
+#include "convoymenu.h"
+#include "cp_common.h"
+#include "ctc.h"
+#include "event.h"
+#include "fontgrp.h"
+#include "hardware.h"
+#include "icon.h"
+#include "m4a.h"
+#include "mapselect.h"
+#include "mu.h"
+#include "packed_data_block.h"
+#include "portrait_pointer.h"
+#include "proc.h"
+#include "raw_text_jp.h"
+#include "rng.h"
+#include "soundwrapper.h"
+#include "statscreen.h"
+#include "uimenu.h"
+#include "uiutils.h"
+#include "unit_icon_data.h"
+#include "unit_icon_pointer.h"
+
+// #define CONST_DATA __attribute__((section(".data")))
+#define CONST_DATA const
+
+#include "types.h"
+#include "variables.h"
+#include "functions.h"
+
+// helper macros
+
+#define ARRAY_COUNT(array) (sizeof(array) / sizeof((array)[0]))
+
+#define RED_VALUE(color) ((color) & 0x1F)
+#define GREEN_VALUE(color) (((color) >> 5) & 0x1F)
+#define BLUE_VALUE(color) (((color) >> 10) & 0x1F)
+
+#define ABS(aValue) ((aValue) >= 0 ? (aValue) : -(aValue))
+
+#define SIN(aAngle) (gSinLookup[(aAngle&0xFF)])
+#define COS(aAngle) (gSinLookup[0x40 + (aAngle&0xFF)])
+
+#define RECT_DISTANCE(aXA, aYA, aXB, aYB) (ABS((aXA) - (aXB)) + ABS((aYA) - (aYB)))
+
+
 
 #ifdef __cplusplus
 } // extern "C"
