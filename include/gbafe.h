@@ -79,6 +79,11 @@ extern "C" {
 
 
 
+#include "constants/characters.h"
+#include "constants/classes.h"
+#include "constants/items.h"
+#include "constants/terrains.h"
+
 #ifdef __cplusplus
 } // extern "C"
 #endif
